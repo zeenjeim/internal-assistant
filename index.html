@@ -1,0 +1,2295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>Internal AI Assistant - Pitch Deck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet"/>
+    <style>
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #000;
+            color: #fff;
+        }
+
+        /* Slide Container */
+        .deck {
+            height: 100vh;
+            width: 100vw;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: clamp(24px, 5vw, 64px);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateX(100px);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #000;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .slide.prev {
+            transform: translateX(-100px);
+        }
+
+        /* Navigation */
+        .nav-arrows {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            z-index: 100;
+        }
+
+        .nav-btn {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            border: 1px solid #333;
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            transition: all 0.2s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .nav-btn:hover {
+            background: #fff;
+            color: #000;
+            border-color: #fff;
+            transform: scale(1.1);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .nav-btn:disabled:hover {
+            background: rgba(0,0,0,0.8);
+            color: #fff;
+            border-color: #333;
+        }
+
+        /* Progress Dots */
+        .progress-dots {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #333;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .dot:hover {
+            background: #666;
+        }
+
+        .dot.active {
+            background: #fff;
+            width: 24px;
+            border-radius: 4px;
+        }
+
+        /* Slide Header */
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #222;
+            margin-bottom: 32px;
+            flex-shrink: 0;
+        }
+
+        .slide-header h2 {
+            font-size: clamp(24px, 4vw, 40px);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .slide-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 0.1em;
+        }
+
+        /* Slide Content */
+        .slide-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* Typography */
+        h1 {
+            font-size: clamp(32px, 6vw, 72px);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            line-height: 1.1;
+        }
+
+        h3 {
+            font-size: clamp(18px, 2.5vw, 24px);
+            font-weight: 600;
+        }
+
+        h4 {
+            font-size: clamp(16px, 2vw, 20px);
+            font-weight: 500;
+        }
+
+        p {
+            color: #888;
+            line-height: 1.6;
+        }
+
+        .text-white { color: #fff; }
+        .text-gray-300 { color: #d1d5db; }
+        .text-gray-400 { color: #9ca3af; }
+        .text-gray-500 { color: #6b7280; }
+        .text-gray-600 { color: #4b5563; }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Slide Footer */
+        .slide-footer {
+            position: absolute;
+            bottom: 24px;
+            left: clamp(24px, 5vw, 64px);
+            right: clamp(24px, 5vw, 64px);
+            padding-top: 16px;
+            border-top: 1px solid #1a1a1a;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: #444;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* ===== SLIDE 1: Title ===== */
+        .slide-title {
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .slide-title .slide-content {
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .title-icon {
+            padding: 20px;
+            border-radius: 16px;
+            background: rgba(17, 24, 39, 0.5);
+            border: 1px solid #333;
+            margin-bottom: 40px;
+        }
+
+        .title-icon i {
+            font-size: 40px;
+            color: #888;
+        }
+
+        .title-tagline {
+            font-size: clamp(20px, 3vw, 32px);
+            color: #888;
+            font-weight: 300;
+            margin-top: 32px;
+            max-width: 700px;
+        }
+
+        .title-tagline span {
+            color: #fff;
+            font-weight: 400;
+            border-bottom: 1px solid #444;
+            padding-bottom: 2px;
+        }
+
+        .trust-badges {
+            display: flex;
+            gap: 24px;
+            margin-top: 48px;
+            padding: 16px 32px;
+            border: 1px solid #222;
+            border-radius: 999px;
+            background: rgba(17, 24, 39, 0.2);
+        }
+
+        .trust-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            font-weight: 500;
+        }
+
+        .trust-badge i {
+            font-size: 12px;
+        }
+
+        .trust-divider {
+            color: #333;
+        }
+
+        /* ===== SLIDE 2: Problem ===== */
+        .problem-layout {
+            display: flex;
+            gap: 48px;
+            width: 100%;
+        }
+
+        .problem-stat {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding-right: 48px;
+            border-right: 1px solid #1a1a1a;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #666;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+
+        .stat-number {
+            font-size: clamp(64px, 12vw, 144px);
+            font-weight: 700;
+            letter-spacing: -0.05em;
+            line-height: 1;
+        }
+
+        .stat-number span {
+            font-size: 0.5em;
+            color: #666;
+        }
+
+        .stat-description {
+            font-size: clamp(16px, 2vw, 24px);
+            color: #d1d5db;
+            font-weight: 300;
+            margin-top: 24px;
+            line-height: 1.4;
+        }
+
+        .stat-bar {
+            margin-top: 32px;
+            height: 8px;
+            background: #1a1a1a;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .stat-bar-fill {
+            height: 100%;
+            width: 30%;
+            background: #fff;
+            opacity: 0.8;
+        }
+
+        .stat-source {
+            margin-top: 12px;
+            font-size: 11px;
+            color: #444;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .problem-points {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .problem-intro {
+            color: #666;
+            margin-bottom: 32px;
+            font-weight: 500;
+        }
+
+        .pain-point {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .pain-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #111;
+            border: 1px solid #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .pain-icon i {
+            color: #888;
+            font-size: 18px;
+        }
+
+        .pain-content h4 {
+            margin-bottom: 6px;
+        }
+
+        .pain-content p {
+            font-size: 14px;
+        }
+
+        /* ===== SLIDE 3: Impact ===== */
+        .impact-layout {
+            display: flex;
+            width: 100%;
+            gap: 32px;
+        }
+
+        .impact-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .impact-column-header {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #666;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 32px;
+            padding-left: 8px;
+        }
+
+        .friction-item {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 28px;
+            align-items: flex-start;
+        }
+
+        .friction-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid #222;
+            background: #111;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .friction-icon i {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .friction-content h4 {
+            color: #d1d5db;
+            margin-bottom: 4px;
+            font-weight: 500;
+        }
+
+        .friction-content p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .impact-divider {
+            width: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .impact-divider::before {
+            content: '';
+            position: absolute;
+            height: 80%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, #333, transparent);
+        }
+
+        .impact-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #111;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .impact-arrow i {
+            color: #fff;
+            font-size: 14px;
+        }
+
+        .impact-card {
+            padding: 20px;
+            border: 1px solid #222;
+            background: rgba(17, 24, 39, 0.3);
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .impact-card.highlight {
+            border-color: #444;
+            background: rgba(17, 24, 39, 0.6);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .impact-card.highlight::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: #fff;
+        }
+
+        .impact-card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 8px;
+        }
+
+        .impact-card-header i {
+            font-size: 20px;
+        }
+
+        .impact-card-header h4 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .impact-card p {
+            padding-left: 36px;
+            font-size: 14px;
+        }
+
+        /* ===== SLIDE 4: Solution ===== */
+        .solution-layout {
+            display: flex;
+            width: 100%;
+            gap: 48px;
+        }
+
+        .solution-input {
+            flex: 5;
+            display: flex;
+            flex-direction: column;
+            padding-right: 48px;
+            border-right: 1px dashed #222;
+        }
+
+        .solution-output {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .solution-header {
+            margin-bottom: 24px;
+        }
+
+        .solution-header h3 {
+            margin-bottom: 8px;
+        }
+
+        .solution-header p {
+            font-size: 14px;
+        }
+
+        .doc-types {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .doc-type {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            border: 1px solid #222;
+            border-radius: 12px;
+            background: rgba(17, 24, 39, 0.2);
+            transition: border-color 0.2s;
+        }
+
+        .doc-type:hover {
+            border-color: #444;
+        }
+
+        .doc-type-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .doc-type-icon i {
+            color: #d1d5db;
+        }
+
+        .doc-type-content h4 {
+            font-size: 15px;
+            margin-bottom: 2px;
+        }
+
+        .doc-type-content p {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .chat-demo {
+            border: 1px solid #222;
+            border-radius: 16px;
+            background: rgba(17, 24, 39, 0.1);
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-demo::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(#333 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.1;
+        }
+
+        .chat-messages {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .chat-user {
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .chat-bubble-user {
+            background: #1a1a1a;
+            border: 1px solid #333;
+            padding: 16px 20px;
+            border-radius: 16px 16px 0 16px;
+            max-width: 70%;
+        }
+
+        .chat-bubble-user p {
+            color: #d1d5db;
+            font-size: 14px;
+        }
+
+        .chat-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .chat-avatar i {
+            font-size: 12px;
+            color: #888;
+        }
+
+        .chat-ai {
+            display: flex;
+            gap: 12px;
+        }
+
+        .chat-avatar-ai {
+            background: #fff;
+        }
+
+        .chat-avatar-ai i {
+            color: #000;
+        }
+
+        .chat-bubble-ai {
+            background: #000;
+            border: 1px solid #333;
+            padding: 20px;
+            border-radius: 16px 16px 16px 0;
+            max-width: 85%;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+        }
+
+        .chat-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            font-size: 11px;
+            color: #666;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+        }
+
+        .chat-bubble-ai p {
+            color: #d1d5db;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .chat-bubble-ai p + p {
+            margin-top: 8px;
+        }
+
+        .chat-bubble-ai strong {
+            color: #fff;
+        }
+
+        .chat-bubble-ai .highlight-text {
+            color: #fff;
+            font-weight: 500;
+            border-bottom: 1px solid #444;
+            padding-bottom: 1px;
+        }
+
+        .solution-benefits {
+            display: flex;
+            justify-content: center;
+            gap: 32px;
+            margin-top: 24px;
+        }
+
+        .solution-benefit {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #666;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .solution-benefit i {
+            color: #fff;
+        }
+
+        /* ===== SLIDE 5: How It Works ===== */
+        .steps-layout {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 48px;
+        }
+
+        .steps-row {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            padding: 0 16px;
+        }
+
+        .steps-row::before {
+            content: '';
+            position: absolute;
+            top: 40px;
+            left: 80px;
+            right: 80px;
+            height: 1px;
+            background: #222;
+        }
+
+        .step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 0 16px;
+        }
+
+        .step-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: #000;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .step-icon i {
+            font-size: 28px;
+            color: #d1d5db;
+        }
+
+        .step-icon.final {
+            background: #fff;
+            border-color: #fff;
+        }
+
+        .step-icon.final i {
+            color: #000;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .step h4 {
+            margin-bottom: 12px;
+        }
+
+        .step p {
+            font-size: 13px;
+            max-width: 180px;
+        }
+
+        .security-banner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 24px 32px;
+            border: 1px solid #222;
+            border-radius: 16px;
+            background: rgba(17, 24, 39, 0.2);
+        }
+
+        .security-main {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .security-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .security-icon i {
+            color: #888;
+        }
+
+        .security-text h4 {
+            margin-bottom: 4px;
+        }
+
+        .security-text p {
+            font-size: 13px;
+        }
+
+        .security-badges {
+            display: flex;
+            gap: 32px;
+            padding-left: 32px;
+            border-left: 1px solid #222;
+        }
+
+        .security-badge {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .security-badge-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #555;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .security-badge-value {
+            font-size: 13px;
+            color: #d1d5db;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .security-badge-value i {
+            font-size: 12px;
+        }
+
+        /* ===== SLIDE 6: Why Not ChatGPT ===== */
+        .comparison-layout {
+            display: flex;
+            width: 100%;
+            gap: 24px;
+            position: relative;
+        }
+
+        .comparison-card {
+            flex: 1;
+            padding: 32px;
+            border-radius: 16px;
+            border: 1px solid #222;
+            background: rgba(17, 24, 39, 0.4);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .comparison-card.recommended {
+            border-color: #fff;
+            background: #111;
+            position: relative;
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: -12px;
+            right: 24px;
+            background: #fff;
+            color: #000;
+            font-size: 10px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 999px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .comparison-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid #222;
+            margin-bottom: 28px;
+        }
+
+        .comparison-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .comparison-icon i {
+            font-size: 20px;
+            color: #888;
+        }
+
+        .comparison-card.recommended .comparison-icon {
+            background: #fff;
+        }
+
+        .comparison-card.recommended .comparison-icon i {
+            color: #000;
+        }
+
+        .comparison-title h3 {
+            font-size: 20px;
+            margin-bottom: 4px;
+        }
+
+        .comparison-title p {
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .comparison-card:not(.recommended) .comparison-title h3 {
+            color: #d1d5db;
+        }
+
+        .comparison-features {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .comparison-feature {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .comparison-card:not(.recommended) .comparison-feature {
+            opacity: 0.7;
+        }
+
+        .comparison-feature i {
+            width: 20px;
+            margin-top: 2px;
+            text-align: center;
+            color: #666;
+        }
+
+        .comparison-card.recommended .comparison-feature i {
+            color: #fff;
+        }
+
+        .comparison-feature h4 {
+            font-size: 15px;
+            margin-bottom: 4px;
+        }
+
+        .comparison-feature p {
+            font-size: 13px;
+        }
+
+        .vs-badge {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #000;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: #666;
+            z-index: 10;
+        }
+
+        /* ===== SLIDE 7: Pilot ===== */
+        .pilot-layout {
+            display: flex;
+            width: 100%;
+            gap: 48px;
+        }
+
+        .pilot-steps {
+            flex: 5;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pilot-metrics {
+            flex: 7;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .pilot-section-header {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: #666;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pilot-step {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            border: 1px solid #222;
+            border-radius: 12px;
+            background: #111;
+            margin-bottom: 12px;
+            position: relative;
+        }
+
+        .pilot-step-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            background: #000;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .pilot-step-icon i {
+            color: #fff;
+        }
+
+        .pilot-step h4 {
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .pilot-step p {
+            font-size: 13px;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .metric-card {
+            padding: 20px;
+            border: 1px solid #222;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.2s;
+        }
+
+        .metric-card:hover {
+            border-color: #444;
+        }
+
+        .metric-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 16px;
+        }
+
+        .metric-header i {
+            font-size: 18px;
+            color: #666;
+        }
+
+        .metric-header span {
+            font-size: 10px;
+            color: #444;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .metric-label {
+            font-size: 13px;
+            color: #888;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .metric-desc {
+            font-size: 11px;
+            color: #555;
+        }
+
+        .pilot-goal {
+            margin-top: 24px;
+            background: #fff;
+            color: #000;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .pilot-goal-content {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .pilot-goal-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pilot-goal-icon i {
+            color: #fff;
+        }
+
+        .pilot-goal-text p {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #666;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 4px;
+        }
+
+        .pilot-goal-text h4 {
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .pilot-goal i.fa-arrow-right-long {
+            font-size: 20px;
+        }
+
+        /* ===== SLIDE 8: Next Steps ===== */
+        .next-layout {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+            gap: 40px;
+        }
+
+        .next-steps-row {
+            display: flex;
+            gap: 24px;
+        }
+
+        .next-step {
+            flex: 1;
+            position: relative;
+            padding-left: 24px;
+            border-left: 1px solid #222;
+        }
+
+        .next-step-number {
+            font-size: clamp(48px, 8vw, 96px);
+            font-weight: 700;
+            color: #1a1a1a;
+            position: absolute;
+            top: -16px;
+            left: -8px;
+            line-height: 1;
+            transition: color 0.2s;
+        }
+
+        .next-step:hover .next-step-number {
+            color: #333;
+        }
+
+        .next-step-content {
+            position: relative;
+            z-index: 1;
+            padding-top: 48px;
+        }
+
+        .next-step-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 12px;
+            background: #111;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .next-step-icon i {
+            font-size: 22px;
+            color: #fff;
+        }
+
+        .next-step h4 {
+            font-size: 20px;
+            margin-bottom: 12px;
+        }
+
+        .next-step p {
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .cta-banner {
+            background: #fff;
+            border-radius: 16px;
+            padding: 40px 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            right: -40px;
+            bottom: -40px;
+            width: 200px;
+            height: 200px;
+            background: #f0f0f0;
+            border-radius: 50%;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-content p {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: #666;
+            font-family: 'JetBrains Mono', monospace;
+            margin-bottom: 8px;
+        }
+
+        .cta-content h3 {
+            font-size: clamp(20px, 3vw, 32px);
+            color: #000;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .cta-content .cta-sub {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .cta-actions {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 12px;
+        }
+
+        .cta-button {
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background 0.2s;
+        }
+
+        .cta-button:hover {
+            background: #333;
+        }
+
+        .cta-email {
+            font-size: 13px;
+            color: #666;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+            .problem-layout,
+            .impact-layout,
+            .solution-layout,
+            .comparison-layout,
+            .pilot-layout {
+                flex-direction: column;
+            }
+
+            .problem-stat {
+                border-right: none;
+                border-bottom: 1px solid #1a1a1a;
+                padding-right: 0;
+                padding-bottom: 32px;
+                margin-bottom: 32px;
+            }
+
+            .solution-input {
+                border-right: none;
+                border-bottom: 1px dashed #222;
+                padding-right: 0;
+                padding-bottom: 32px;
+            }
+
+            .impact-divider {
+                width: 100%;
+                height: 48px;
+            }
+
+            .impact-divider::before {
+                height: 1px;
+                width: 80%;
+                top: 50%;
+                left: 10%;
+            }
+
+            .vs-badge {
+                position: relative;
+                margin: 16px auto;
+            }
+
+            .steps-row {
+                flex-direction: column;
+                gap: 24px;
+                align-items: center;
+            }
+
+            .steps-row::before {
+                display: none;
+            }
+
+            .step {
+                width: 100%;
+                max-width: 300px;
+            }
+
+            .security-banner {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .security-badges {
+                border-left: none;
+                border-top: 1px solid #222;
+                padding-left: 0;
+                padding-top: 24px;
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .next-steps-row {
+                flex-direction: column;
+            }
+
+            .cta-banner {
+                flex-direction: column;
+                text-align: center;
+                gap: 24px;
+            }
+
+            .cta-actions {
+                align-items: center;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-arrows {
+                bottom: 24px;
+            }
+
+            .nav-btn {
+                width: 48px;
+                height: 48px;
+            }
+
+            .slide-footer {
+                display: none;
+            }
+        }
+
+        /* Keyboard hint */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 11px;
+            color: #444;
+            font-family: 'JetBrains Mono', monospace;
+            opacity: 1;
+            transition: opacity 0.3s;
+            pointer-events: none;
+        }
+
+        .keyboard-hint.hidden {
+            opacity: 0;
+        }
+
+        .keyboard-hint kbd {
+            display: inline-block;
+            padding: 2px 8px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 4px;
+            margin: 0 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="deck">
+        <!-- SLIDE 1: Title -->
+        <div class="slide slide-title active" data-slide="0">
+            <div class="slide-content">
+                <div class="title-icon">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <h1>Internal AI Assistant<br/>for Companies</h1>
+                <p class="title-tagline">
+                    Turn company documents into <span>instant, reliable answers</span>
+                </p>
+                <div class="trust-badges">
+                    <div class="trust-badge">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <span>Private</span>
+                    </div>
+                    <span class="trust-divider">|</span>
+                    <div class="trust-badge">
+                        <i class="fa-solid fa-lock"></i>
+                        <span>Secure</span>
+                    </div>
+                    <span class="trust-divider">|</span>
+                    <div class="trust-badge">
+                        <i class="fa-solid fa-server"></i>
+                        <span>Trained only on your data</span>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Internal AI Assistant</span>
+                <span>Confidential</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 2: Problem -->
+        <div class="slide" data-slide="1">
+            <div class="slide-header">
+                <h2>The Problem</h2>
+                <span class="slide-number">02</span>
+            </div>
+            <div class="slide-content">
+                <div class="problem-layout">
+                    <div class="problem-stat">
+                        <span class="stat-label">Productivity Loss</span>
+                        <div class="stat-number">30<span>%</span></div>
+                        <p class="stat-description">of knowledge workers' time is wasted searching for information every single day.</p>
+                        <div class="stat-bar">
+                            <div class="stat-bar-fill"></div>
+                        </div>
+                        <p class="stat-source">Source: McKinsey Global Institute</p>
+                    </div>
+                    <div class="problem-points">
+                        <p class="problem-intro">Employees lose time every day by:</p>
+                        <div class="pain-point">
+                            <div class="pain-icon">
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </div>
+                            <div class="pain-content">
+                                <h4 class="text-white">Searching for internal documents</h4>
+                                <p>Digging through Drive folders, Slack channels, and emails to find updated policies.</p>
+                            </div>
+                        </div>
+                        <div class="pain-point">
+                            <div class="pain-icon">
+                                <i class="fa-solid fa-comments"></i>
+                            </div>
+                            <div class="pain-content">
+                                <h4 class="text-white">Asking repetitive questions</h4>
+                                <p>Sending the same "Where do I find...?" messages to colleagues multiple times a week.</p>
+                            </div>
+                        </div>
+                        <div class="pain-point">
+                            <div class="pain-icon">
+                                <i class="fa-solid fa-user-clock"></i>
+                            </div>
+                            <div class="pain-content">
+                                <h4 class="text-white">Interrupting senior staff</h4>
+                                <p>Pulling managers away from high-value work to answer routine operational queries.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Operational Friction Analysis</span>
+                <span>Confidential</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 3: Impact -->
+        <div class="slide" data-slide="2">
+            <div class="slide-header">
+                <h2>Business Impact</h2>
+                <span class="slide-number">03</span>
+            </div>
+            <div class="slide-content">
+                <div class="impact-layout">
+                    <div class="impact-column">
+                        <p class="impact-column-header">Operational Friction</p>
+                        <div class="friction-item">
+                            <div class="friction-icon">
+                                <i class="fa-regular fa-clock"></i>
+                            </div>
+                            <div class="friction-content">
+                                <h4>Slower decisions</h4>
+                                <p>Teams wait hours or days for information needed to move forward.</p>
+                            </div>
+                        </div>
+                        <div class="friction-item">
+                            <div class="friction-icon">
+                                <i class="fa-solid fa-shuffle"></i>
+                            </div>
+                            <div class="friction-content">
+                                <h4>Inconsistent answers</h4>
+                                <p>Different departments work off outdated or conflicting data.</p>
+                            </div>
+                        </div>
+                        <div class="friction-item">
+                            <div class="friction-icon">
+                                <i class="fa-solid fa-hourglass-start"></i>
+                            </div>
+                            <div class="friction-content">
+                                <h4>Longer onboarding</h4>
+                                <p>New hires spend weeks learning "who to ask" instead of "where to look."</p>
+                            </div>
+                        </div>
+                        <div class="friction-item">
+                            <div class="friction-icon">
+                                <i class="fa-solid fa-lock"></i>
+                            </div>
+                            <div class="friction-content">
+                                <h4>Knowledge silos</h4>
+                                <p>Critical IP is locked in static documents or the heads of key employees.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="impact-divider">
+                        <div class="impact-arrow">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    </div>
+                    <div class="impact-column">
+                        <p class="impact-column-header text-white">Bottom Line Impact</p>
+                        <div class="impact-card">
+                            <div class="impact-card-header">
+                                <i class="fa-solid fa-arrow-trend-down" style="color: #f87171;"></i>
+                                <h4>Lower Productivity</h4>
+                            </div>
+                            <p>Valuable hours burned on low-value search tasks.</p>
+                        </div>
+                        <div class="impact-card highlight">
+                            <div class="impact-card-header">
+                                <i class="fa-solid fa-sack-dollar text-white"></i>
+                                <h4>Higher Operational Cost</h4>
+                            </div>
+                            <p class="text-gray-300">Expensive talent used for repetitive support work.</p>
+                        </div>
+                        <div class="impact-card">
+                            <div class="impact-card-header">
+                                <i class="fa-solid fa-ban text-gray-300"></i>
+                                <h4>Reduced Scalability</h4>
+                            </div>
+                            <p>Knowledge bottlenecks choke growth as headcount increases.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Cause & Effect Analysis</span>
+                <span>Confidential</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 4: Solution -->
+        <div class="slide" data-slide="3">
+            <div class="slide-header">
+                <h2>The Solution</h2>
+                <span class="slide-number">04</span>
+            </div>
+            <div class="slide-content">
+                <div class="solution-layout">
+                    <div class="solution-input">
+                        <div class="solution-header">
+                            <h3 class="text-white">Private Knowledge Base</h3>
+                            <p>The AI is trained exclusively on your internal documents.</p>
+                        </div>
+                        <div class="doc-types">
+                            <div class="doc-type">
+                                <div class="doc-type-icon">
+                                    <i class="fa-solid fa-scale-balanced"></i>
+                                </div>
+                                <div class="doc-type-content">
+                                    <h4 class="text-white">Company Policies</h4>
+                                    <p>HR, Compliance, Legal frameworks</p>
+                                </div>
+                            </div>
+                            <div class="doc-type">
+                                <div class="doc-type-icon">
+                                    <i class="fa-solid fa-list-check"></i>
+                                </div>
+                                <div class="doc-type-content">
+                                    <h4 class="text-white">Standard Operating Procedures</h4>
+                                    <p>SOPs, Playbooks, workflows</p>
+                                </div>
+                            </div>
+                            <div class="doc-type">
+                                <div class="doc-type-icon">
+                                    <i class="fa-solid fa-file-contract"></i>
+                                </div>
+                                <div class="doc-type-content">
+                                    <h4 class="text-white">Contracts & Agreements</h4>
+                                    <p>Vendor, Client, Partner terms</p>
+                                </div>
+                            </div>
+                            <div class="doc-type">
+                                <div class="doc-type-icon">
+                                    <i class="fa-solid fa-book-open"></i>
+                                </div>
+                                <div class="doc-type-content">
+                                    <h4 class="text-white">Internal Guidelines</h4>
+                                    <p>Brand, Culture, Technical specs</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="solution-output">
+                        <div class="solution-header">
+                            <h3 class="text-white">Instant, Reliable Answers</h3>
+                            <p>Employees ask in natural language. No training required.</p>
+                        </div>
+                        <div class="chat-demo">
+                            <div class="chat-messages">
+                                <div class="chat-user">
+                                    <div class="chat-bubble-user">
+                                        <p>"What is the approval limit for new software subscriptions?"</p>
+                                    </div>
+                                    <div class="chat-avatar">
+                                        <i class="fa-solid fa-user"></i>
+                                    </div>
+                                </div>
+                                <div class="chat-ai">
+                                    <div class="chat-avatar chat-avatar-ai">
+                                        <i class="fa-solid fa-bolt"></i>
+                                    </div>
+                                    <div class="chat-bubble-ai">
+                                        <div class="chat-meta">
+                                            <span>Answer</span>
+                                            <span>|</span>
+                                            <span><i class="fa-solid fa-link"></i> Source: IT_Procurement_Policy_v2.pdf</span>
+                                        </div>
+                                        <p>According to the <span class="highlight-text">IT Procurement Policy</span>, department heads can approve software subscriptions up to <strong>$2,000/year</strong>.</p>
+                                        <p>Amounts above this threshold require CTO approval via the <span class="highlight-text">Vendor Onboarding Portal</span>.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="solution-benefits">
+                            <div class="solution-benefit">
+                                <i class="fa-solid fa-check"></i>
+                                <span>Consistent</span>
+                            </div>
+                            <div class="solution-benefit">
+                                <i class="fa-solid fa-check"></i>
+                                <span>Cited Sources</span>
+                            </div>
+                            <div class="solution-benefit">
+                                <i class="fa-solid fa-check"></i>
+                                <span>0% Hallucination</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Product Solution Overview</span>
+                <span>Confidential</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 5: How It Works -->
+        <div class="slide" data-slide="4">
+            <div class="slide-header">
+                <h2>How It Works</h2>
+                <span class="slide-number">05</span>
+            </div>
+            <div class="slide-content">
+                <div class="steps-layout">
+                    <div class="steps-row">
+                        <div class="step">
+                            <div class="step-icon">
+                                <span class="step-number">1</span>
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                            </div>
+                            <h4 class="text-white">Upload Data</h4>
+                            <p>Company documents (PDFs, Docs, Wikis) are securely uploaded to a private environment.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">
+                                <span class="step-number">2</span>
+                                <i class="fa-solid fa-database"></i>
+                            </div>
+                            <h4 class="text-white">Secure Indexing</h4>
+                            <p>The AI processes and indexes content, creating a searchable knowledge graph.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon">
+                                <span class="step-number">3</span>
+                                <i class="fa-regular fa-comment-dots"></i>
+                            </div>
+                            <h4 class="text-white">Natural Query</h4>
+                            <p>Employees ask questions in plain English via Slack, Teams, or Web App.</p>
+                        </div>
+                        <div class="step">
+                            <div class="step-icon final">
+                                <span class="step-number">4</span>
+                                <i class="fa-solid fa-check-double"></i>
+                            </div>
+                            <h4 class="text-white">Instant Answer</h4>
+                            <p>AI generates a precise answer citing specific internal source documents.</p>
+                        </div>
+                    </div>
+                    <div class="security-banner">
+                        <div class="security-main">
+                            <div class="security-icon">
+                                <i class="fa-solid fa-shield-cat"></i>
+                            </div>
+                            <div class="security-text">
+                                <h4 class="text-white">Security First Architecture</h4>
+                                <p>Your data remains isolated. We never use your data to train public models.</p>
+                            </div>
+                        </div>
+                        <div class="security-badges">
+                            <div class="security-badge">
+                                <span class="security-badge-label">Training</span>
+                                <span class="security-badge-value">
+                                    <i class="fa-solid fa-xmark" style="color: #7f1d1d;"></i>
+                                    No External Training
+                                </span>
+                            </div>
+                            <div class="security-badge">
+                                <span class="security-badge-label">Leakage</span>
+                                <span class="security-badge-value">
+                                    <i class="fa-solid fa-lock"></i>
+                                    Zero Data Leakage
+                                </span>
+                            </div>
+                            <div class="security-badge">
+                                <span class="security-badge-label">Isolation</span>
+                                <span class="security-badge-value">
+                                    <i class="fa-solid fa-box"></i>
+                                    100% Tenant Isolation
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Workflow & Security Architecture</span>
+                <span>Confidential</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 6: Why Not ChatGPT -->
+        <div class="slide" data-slide="5">
+            <div class="slide-header">
+                <h2>Why Not ChatGPT?</h2>
+                <span class="slide-number">06</span>
+            </div>
+            <div class="slide-content">
+                <div class="comparison-layout">
+                    <div class="comparison-card">
+                        <div class="comparison-header">
+                            <div class="comparison-icon">
+                                <i class="fa-solid fa-robot"></i>
+                            </div>
+                            <div class="comparison-title">
+                                <h3>Public AI / ChatGPT</h3>
+                                <p class="text-gray-500">General Purpose</p>
+                            </div>
+                        </div>
+                        <div class="comparison-features">
+                            <div class="comparison-feature">
+                                <i class="fa-solid fa-earth-americas"></i>
+                                <div>
+                                    <h4 class="text-gray-300">Broad, General Knowledge</h4>
+                                    <p>Great for creative writing, but lacks your company's specific context.</p>
+                                </div>
+                            </div>
+                            <div class="comparison-feature">
+                                <i class="fa-regular fa-file-excel"></i>
+                                <div>
+                                    <h4 class="text-gray-300">Not Trained on Your Data</h4>
+                                    <p>Cannot reference your specific policies, SOPs, or internal history.</p>
+                                </div>
+                            </div>
+                            <div class="comparison-feature">
+                                <i class="fa-regular fa-copy"></i>
+                                <div>
+                                    <h4 class="text-gray-300">Manual Workflow</h4>
+                                    <p>Requires employees to copy-paste internal info (security risk).</p>
+                                </div>
+                            </div>
+                            <div class="comparison-feature">
+                                <i class="fa-solid fa-user-shield"></i>
+                                <div>
+                                    <h4 class="text-gray-300">Limited Governance</h4>
+                                    <p>No admin controls over data retention or output verification.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="vs-badge">VS</div>
+                    <div class="comparison-card recommended">
+                        <div class="recommended-badge">Recommended</div>
+                        <div class="comparison-header">
+                            <div class="comparison-icon">
+                                <i class="fa-solid fa-layer-group"></i>
+                            </div>
+                            <div class="comparison-title">
+                                <h3 class="text-white">Internal Assistant</h3>
+                                <p class="text-gray-400">Enterprise Grade</p>
+                            </div>
+                        </div>
+                        <div class="comparison-features">
+                            <div class="comparison-feature">
+                                <i class="fa-solid fa-bullseye"></i>
+                                <div>
+                                    <h4 class="text-white">Specialized Context</h4>
+                                    <p>Understands your acronyms, projects, and organizational structure.</p>
+                                </div>
+                            </div>
+                            <div class="comparison-feature">
+                                <i class="fa-solid fa-database"></i>
+                                <div>
+                                    <h4 class="text-white">Deeply Indexed Documents</h4>
+                                    <p>Instantly recalls details from PDFs, Notion, Drive, and Wikis.</p>
+                                </div>
+                            </div>
+                            <div class="comparison-feature">
+                                <i class="fa-solid fa-bolt"></i>
+                                <div>
+                                    <h4 class="text-white">Integrated & Secure</h4>
+                                    <p>Data stays within your tenant. Zero training on public models.</p>
+                                </div>
+                            </div>
+                            <div class="comparison-feature">
+                                <i class="fa-solid fa-check-double"></i>
+                                <div>
+                                    <h4 class="text-white">Consistent & Verifiable</h4>
+                                    <p>Every answer includes citations linking back to the source.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Competitive Analysis</span>
+                <span>Confidential</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 7: Pilot -->
+        <div class="slide" data-slide="6">
+            <div class="slide-header">
+                <h2>Pilot & Measurable Value</h2>
+                <span class="slide-number">07</span>
+            </div>
+            <div class="slide-content">
+                <div class="pilot-layout">
+                    <div class="pilot-steps">
+                        <p class="pilot-section-header">
+                            <i class="fa-solid fa-sliders"></i>
+                            Pilot Configuration
+                        </p>
+                        <div class="pilot-step">
+                            <div class="pilot-step-icon">
+                                <i class="fa-solid fa-users"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white">Select One Department</h4>
+                                <p>Start small (e.g., HR, IT, or Sales Support)</p>
+                            </div>
+                        </div>
+                        <div class="pilot-step">
+                            <div class="pilot-step-icon">
+                                <i class="fa-solid fa-folder-open"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white">Curate Document Set</h4>
+                                <p>Upload 50-100 key high-value documents</p>
+                            </div>
+                        </div>
+                        <div class="pilot-step">
+                            <div class="pilot-step-icon">
+                                <i class="fa-regular fa-calendar-check"></i>
+                            </div>
+                            <div>
+                                <h4 class="text-white">2-3 Week Timeline</h4>
+                                <p>Rapid testing cycle to gather feedback</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pilot-metrics">
+                        <p class="pilot-section-header">
+                            <i class="fa-solid fa-chart-line"></i>
+                            Success Metrics
+                        </p>
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <i class="fa-solid fa-comments"></i>
+                                    <span>KPI 01</span>
+                                </div>
+                                <p class="metric-value">-40%</p>
+                                <p class="metric-label">Repeated Questions</p>
+                                <p class="metric-desc">Reduction in duplicate queries to management.</p>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <i class="fa-solid fa-stopwatch"></i>
+                                    <span>KPI 02</span>
+                                </div>
+                                <p class="metric-value">&lt; 5s</p>
+                                <p class="metric-label">Time to Answer</p>
+                                <p class="metric-desc">Instant retrieval vs. 15+ min manual search.</p>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <i class="fa-solid fa-user-check"></i>
+                                    <span>KPI 03</span>
+                                </div>
+                                <p class="metric-value">85%+</p>
+                                <p class="metric-label">Adoption Rate</p>
+                                <p class="metric-desc">Weekly active usage within pilot team.</p>
+                            </div>
+                            <div class="metric-card">
+                                <div class="metric-header">
+                                    <i class="fa-solid fa-piggy-bank"></i>
+                                    <span>KPI 04</span>
+                                </div>
+                                <p class="metric-value">ROI</p>
+                                <p class="metric-label">Hours Saved / Emp</p>
+                                <p class="metric-desc">Calculated productivity gain per week.</p>
+                            </div>
+                        </div>
+                        <div class="pilot-goal">
+                            <div class="pilot-goal-content">
+                                <div class="pilot-goal-icon">
+                                    <i class="fa-solid fa-flag-checkered"></i>
+                                </div>
+                                <div class="pilot-goal-text">
+                                    <p>Primary Objective</p>
+                                    <h4>Prove ROI before full organizational rollout</h4>
+                                </div>
+                            </div>
+                            <i class="fa-solid fa-arrow-right-long"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Pilot Program Strategy</span>
+                <span>Confidential</span>
+            </div>
+        </div>
+
+        <!-- SLIDE 8: Next Steps -->
+        <div class="slide" data-slide="7">
+            <div class="slide-header">
+                <h2>Next Steps</h2>
+                <span class="slide-number">08</span>
+            </div>
+            <div class="slide-content">
+                <div class="next-layout">
+                    <div class="next-steps-row">
+                        <div class="next-step">
+                            <span class="next-step-number">1</span>
+                            <div class="next-step-content">
+                                <div class="next-step-icon">
+                                    <i class="fa-solid fa-users-viewfinder"></i>
+                                </div>
+                                <h4 class="text-white">Select Pilot Team</h4>
+                                <p>Identify a specific department (e.g., HR or Support) facing high question volume.</p>
+                            </div>
+                        </div>
+                        <div class="next-step">
+                            <span class="next-step-number">2</span>
+                            <div class="next-step-content">
+                                <div class="next-step-icon">
+                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                                </div>
+                                <h4 class="text-white">Upload Documents</h4>
+                                <p>Securely connect your knowledge base or upload key PDF/Doc files for indexing.</p>
+                            </div>
+                        </div>
+                        <div class="next-step">
+                            <span class="next-step-number">3</span>
+                            <div class="next-step-content">
+                                <div class="next-step-icon">
+                                    <i class="fa-solid fa-rocket"></i>
+                                </div>
+                                <h4 class="text-white">Launch in Days</h4>
+                                <p>Grant access to the pilot team and start measuring time saved immediately.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cta-banner">
+                        <div class="cta-content">
+                            <p>Ready to start?</p>
+                            <h3>Run a pilot and measure the impact.</h3>
+                            <p class="cta-sub">See the difference in productivity within the first week.</p>
+                        </div>
+                        <div class="cta-actions">
+                            <button class="cta-button">
+                                Schedule Demo
+                                <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                            <span class="cta-email">founders@internal-ai.com</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="slide-footer">
+                <span>Implementation Plan</span>
+                <span>Confidential</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="nav-arrows">
+        <button class="nav-btn" id="prevBtn" disabled>
+            <i class="fa-solid fa-chevron-left"></i>
+        </button>
+        <div class="progress-dots" id="progressDots"></div>
+        <button class="nav-btn" id="nextBtn">
+            <i class="fa-solid fa-chevron-right"></i>
+        </button>
+    </div>
+
+    <!-- Keyboard hint -->
+    <div class="keyboard-hint" id="keyboardHint">
+        Use <kbd>←</kbd> <kbd>→</kbd> arrow keys or click to navigate
+    </div>
+
+    <script>
+        const slides = document.querySelectorAll('.slide');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressDots = document.getElementById('progressDots');
+        const keyboardHint = document.getElementById('keyboardHint');
+        let currentSlide = 0;
+        const totalSlides = slides.length;
+
+        // Create progress dots
+        for (let i = 0; i < totalSlides; i++) {
+            const dot = document.createElement('div');
+            dot.className = 'dot' + (i === 0 ? ' active' : '');
+            dot.addEventListener('click', () => goToSlide(i));
+            progressDots.appendChild(dot);
+        }
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateSlide(direction) {
+            slides[currentSlide].classList.remove('active');
+            slides[currentSlide].classList.add(direction === 'next' ? 'prev' : '');
+
+            if (direction === 'next') {
+                currentSlide = Math.min(currentSlide + 1, totalSlides - 1);
+            } else {
+                currentSlide = Math.max(currentSlide - 1, 0);
+            }
+
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'prev');
+                if (index < currentSlide) {
+                    slide.classList.add('prev');
+                }
+            });
+
+            slides[currentSlide].classList.add('active');
+            updateUI();
+        }
+
+        function goToSlide(index) {
+            if (index === currentSlide) return;
+
+            const direction = index > currentSlide ? 'next' : 'prev';
+            slides[currentSlide].classList.remove('active');
+
+            slides.forEach((slide, i) => {
+                slide.classList.remove('active', 'prev');
+                if (i < index) {
+                    slide.classList.add('prev');
+                }
+            });
+
+            currentSlide = index;
+            slides[currentSlide].classList.add('active');
+            updateUI();
+        }
+
+        function updateUI() {
+            // Update buttons
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+
+            // Update dots
+            dots.forEach((dot, index) => {
+                dot.classList.toggle('active', index === currentSlide);
+            });
+        }
+
+        // Navigation event listeners
+        prevBtn.addEventListener('click', () => updateSlide('prev'));
+        nextBtn.addEventListener('click', () => updateSlide('next'));
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                if (currentSlide < totalSlides - 1) updateSlide('next');
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                if (currentSlide > 0) updateSlide('prev');
+            }
+        });
+
+        // Touch/swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0 && currentSlide < totalSlides - 1) {
+                    updateSlide('next');
+                } else if (diff < 0 && currentSlide > 0) {
+                    updateSlide('prev');
+                }
+            }
+        }
+
+        // Click on slide to advance (except on interactive elements)
+        document.querySelector('.deck').addEventListener('click', (e) => {
+            const tag = e.target.tagName.toLowerCase();
+            const isInteractive = ['button', 'a', 'input'].includes(tag) ||
+                                  e.target.closest('button') ||
+                                  e.target.closest('.nav-arrows') ||
+                                  e.target.closest('.progress-dots');
+
+            if (!isInteractive) {
+                const clickX = e.clientX;
+                const windowWidth = window.innerWidth;
+
+                if (clickX > windowWidth / 2) {
+                    if (currentSlide < totalSlides - 1) updateSlide('next');
+                } else {
+                    if (currentSlide > 0) updateSlide('prev');
+                }
+            }
+        });
+
+        // Hide keyboard hint after first interaction
+        let hintHidden = false;
+        function hideHint() {
+            if (!hintHidden) {
+                keyboardHint.classList.add('hidden');
+                hintHidden = true;
+            }
+        }
+
+        document.addEventListener('keydown', hideHint);
+        document.addEventListener('click', hideHint);
+        document.addEventListener('touchstart', hideHint);
+
+        // Auto-hide hint after 5 seconds
+        setTimeout(hideHint, 5000);
+    </script>
+</body>
+</html>
