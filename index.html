@@ -39,20 +39,20 @@
             flex-direction: column;
             padding: clamp(24px, 5vw, 64px);
             opacity: 0;
-            visibility: hidden;
-            transform: translateX(100px);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+            transform: translateX(60px);
+            transition: opacity 0.4s ease, transform 0.4s ease;
             background: #000;
+        }
+
+        .slide.prev {
+            transform: translateX(-60px);
         }
 
         .slide.active {
             opacity: 1;
-            visibility: visible;
+            pointer-events: auto;
             transform: translateX(0);
-        }
-
-        .slide.prev {
-            transform: translateX(-100px);
         }
 
         /* Navigation */
@@ -2164,43 +2164,54 @@
 
         const dots = document.querySelectorAll('.dot');
 
-        function updateSlide(direction) {
-            slides[currentSlide].classList.remove('active');
-            slides[currentSlide].classList.add(direction === 'next' ? 'prev' : '');
+        function goToSlide(index) {
+            if (index === currentSlide || index < 0 || index >= totalSlides) return;
 
-            if (direction === 'next') {
-                currentSlide = Math.min(currentSlide + 1, totalSlides - 1);
+            const goingForward = index > currentSlide;
+            const oldIndex = currentSlide;
+            currentSlide = index;
+
+            // Remove active from old slide
+            slides[oldIndex].classList.remove('active');
+
+            if (goingForward) {
+                // Old slide exits to left
+                slides[oldIndex].classList.add('prev');
+                // New slide enters from right (just add active)
+                slides[currentSlide].classList.remove('prev');
+                slides[currentSlide].classList.add('active');
             } else {
-                currentSlide = Math.max(currentSlide - 1, 0);
+                // Old slide exits to right (remove prev if any)
+                slides[oldIndex].classList.remove('prev');
+                // New slide enters from left (it should have prev, add active)
+                slides[currentSlide].classList.add('active');
+                // Clean up prev class after transition starts
+                requestAnimationFrame(() => {
+                    slides[currentSlide].classList.remove('prev');
+                });
             }
 
-            slides.forEach((slide, index) => {
-                slide.classList.remove('active', 'prev');
-                if (index < currentSlide) {
-                    slide.classList.add('prev');
+            // Update prev classes for all other slides
+            slides.forEach((slide, i) => {
+                if (i !== currentSlide && i !== oldIndex) {
+                    if (i < currentSlide) {
+                        slide.classList.add('prev');
+                        slide.classList.remove('active');
+                    } else {
+                        slide.classList.remove('prev', 'active');
+                    }
                 }
             });
 
-            slides[currentSlide].classList.add('active');
             updateUI();
         }
 
-        function goToSlide(index) {
-            if (index === currentSlide) return;
-
-            const direction = index > currentSlide ? 'next' : 'prev';
-            slides[currentSlide].classList.remove('active');
-
-            slides.forEach((slide, i) => {
-                slide.classList.remove('active', 'prev');
-                if (i < index) {
-                    slide.classList.add('prev');
-                }
-            });
-
-            currentSlide = index;
-            slides[currentSlide].classList.add('active');
-            updateUI();
+        function updateSlide(direction) {
+            if (direction === 'next' && currentSlide < totalSlides - 1) {
+                goToSlide(currentSlide + 1);
+            } else if (direction === 'prev' && currentSlide > 0) {
+                goToSlide(currentSlide - 1);
+            }
         }
 
         function updateUI() {
