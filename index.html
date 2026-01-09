@@ -1496,6 +1496,153 @@
             border-radius: 4px;
         }
 
+        /* Comparison Table Styles */
+        .comparison-table-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        .comparison-table th,
+        .comparison-table td {
+            padding: 16px 20px;
+            text-align: center;
+            border-bottom: 1px solid #222;
+        }
+
+        .comparison-table th {
+            background: #0a0a0a;
+            font-weight: 600;
+            color: #888;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.1em;
+        }
+
+        .comparison-table th.feature-col {
+            text-align: left;
+            width: 40%;
+        }
+
+        .comparison-table th.competitor-col {
+            width: 20%;
+        }
+
+        .comparison-table th.zeke-col {
+            width: 20%;
+            background: linear-gradient(180deg, #1a1a1a 0%, #0a0a0a 100%);
+            border-left: 2px solid #fff;
+            border-right: 2px solid #fff;
+            border-top: 2px solid #fff;
+        }
+
+        .competitor-header,
+        .zeke-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .competitor-header i,
+        .zeke-header i {
+            font-size: 20px;
+        }
+
+        .zeke-header {
+            color: #fff;
+        }
+
+        .zeke-header i {
+            color: #fff;
+        }
+
+        .comparison-table td {
+            color: #666;
+        }
+
+        .comparison-table td.feature-name {
+            text-align: left;
+            color: #d1d5db;
+            font-weight: 500;
+        }
+
+        .comparison-table td.zeke-cell {
+            background: rgba(255, 255, 255, 0.03);
+            border-left: 2px solid #fff;
+            border-right: 2px solid #fff;
+        }
+
+        .comparison-table tbody tr:last-child td.zeke-cell {
+            border-bottom: 2px solid #fff;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .mark-yes {
+            color: #4ade80;
+            font-size: 18px;
+        }
+
+        .mark-no {
+            color: #f87171;
+            font-size: 18px;
+        }
+
+        .mark-partial {
+            color: #fbbf24;
+            font-size: 18px;
+        }
+
+        .zeke-value-prop {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            padding: 24px;
+            background: linear-gradient(90deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border: 1px solid #333;
+            border-radius: 12px;
+            border-left: 3px solid #fff;
+        }
+
+        .value-prop-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .value-prop-icon i {
+            color: #000;
+            font-size: 20px;
+        }
+
+        .value-prop-text h4 {
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 6px;
+        }
+
+        .value-prop-text p {
+            color: #888;
+            font-size: 14px;
+            line-height: 1.5;
+            margin: 0;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 900px) {
             .problem-layout,
@@ -1578,6 +1725,24 @@
 
             .timeline-line {
                 display: none;
+            }
+
+            .comparison-table {
+                font-size: 12px;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 12px 8px;
+            }
+
+            .comparison-table th.feature-col {
+                width: 35%;
+            }
+
+            .zeke-value-prop {
+                flex-direction: column;
+                text-align: center;
             }
 
             .cta-banner {
@@ -2008,96 +2173,96 @@
             </div>
         </div>
 
-        <!-- SLIDE 6: Why Not ChatGPT -->
+        <!-- SLIDE 6: Comparison Table -->
         <div class="slide" data-slide="5">
             <div class="slide-header">
-                <h2>Why Not ChatGPT?</h2>
+                <h2>Why Zeke?</h2>
                 <span class="slide-number">06</span>
             </div>
             <div class="slide-content">
-                <div class="comparison-layout">
-                    <div class="comparison-card">
-                        <div class="comparison-header">
-                            <div class="comparison-icon">
-                                <i class="fa-solid fa-robot"></i>
-                            </div>
-                            <div class="comparison-title">
-                                <h3>Public AI / ChatGPT</h3>
-                                <p class="text-gray-500">General Purpose</p>
-                            </div>
+                <div class="comparison-table-wrapper">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th class="feature-col">Feature</th>
+                                <th class="competitor-col">
+                                    <div class="competitor-header">
+                                        <i class="fa-solid fa-robot"></i>
+                                        <span>ChatGPT</span>
+                                    </div>
+                                </th>
+                                <th class="competitor-col">
+                                    <div class="competitor-header">
+                                        <i class="fa-solid fa-book"></i>
+                                        <span>NotebookLM</span>
+                                    </div>
+                                </th>
+                                <th class="zeke-col">
+                                    <div class="zeke-header">
+                                        <i class="fa-solid fa-bolt"></i>
+                                        <span>Zeke</span>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="feature-name">Trained on your docs only</td>
+                                <td><i class="fa-solid fa-xmark mark-no"></i></td>
+                                <td><i class="fa-solid fa-check mark-yes"></i></td>
+                                <td class="zeke-cell"><i class="fa-solid fa-check mark-yes"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Zero data leakage</td>
+                                <td><i class="fa-solid fa-xmark mark-no"></i></td>
+                                <td><i class="fa-solid fa-minus mark-partial"></i></td>
+                                <td class="zeke-cell"><i class="fa-solid fa-check mark-yes"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Source citations</td>
+                                <td><i class="fa-solid fa-minus mark-partial"></i></td>
+                                <td><i class="fa-solid fa-check mark-yes"></i></td>
+                                <td class="zeke-cell"><i class="fa-solid fa-check mark-yes"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Private/isolated deployment</td>
+                                <td><i class="fa-solid fa-xmark mark-no"></i></td>
+                                <td><i class="fa-solid fa-xmark mark-no"></i></td>
+                                <td class="zeke-cell"><i class="fa-solid fa-check mark-yes"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Enterprise SSO & admin controls</td>
+                                <td><i class="fa-solid fa-minus mark-partial"></i></td>
+                                <td><i class="fa-solid fa-xmark mark-no"></i></td>
+                                <td class="zeke-cell"><i class="fa-solid fa-check mark-yes"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Slack / Teams integration</td>
+                                <td><i class="fa-solid fa-xmark mark-no"></i></td>
+                                <td><i class="fa-solid fa-xmark mark-no"></i></td>
+                                <td class="zeke-cell"><i class="fa-solid fa-check mark-yes"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">No model training on your data</td>
+                                <td><i class="fa-solid fa-xmark mark-no"></i></td>
+                                <td><i class="fa-solid fa-minus mark-partial"></i></td>
+                                <td class="zeke-cell"><i class="fa-solid fa-check mark-yes"></i></td>
+                            </tr>
+                            <tr>
+                                <td class="feature-name">Dedicated support & onboarding</td>
+                                <td><i class="fa-solid fa-xmark mark-no"></i></td>
+                                <td><i class="fa-solid fa-xmark mark-no"></i></td>
+                                <td class="zeke-cell"><i class="fa-solid fa-check mark-yes"></i></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="zeke-value-prop">
+                        <div class="value-prop-icon">
+                            <i class="fa-solid fa-shield-halved"></i>
                         </div>
-                        <div class="comparison-features">
-                            <div class="comparison-feature">
-                                <i class="fa-solid fa-earth-americas"></i>
-                                <div>
-                                    <h4 class="text-gray-300">Broad, General Knowledge</h4>
-                                    <p>Great for creative writing, but lacks your company's specific context.</p>
-                                </div>
-                            </div>
-                            <div class="comparison-feature">
-                                <i class="fa-regular fa-file-excel"></i>
-                                <div>
-                                    <h4 class="text-gray-300">Not Trained on Your Data</h4>
-                                    <p>Cannot reference your specific policies, SOPs, or internal history.</p>
-                                </div>
-                            </div>
-                            <div class="comparison-feature">
-                                <i class="fa-regular fa-copy"></i>
-                                <div>
-                                    <h4 class="text-gray-300">Manual Workflow</h4>
-                                    <p>Requires employees to copy-paste internal info (security risk).</p>
-                                </div>
-                            </div>
-                            <div class="comparison-feature">
-                                <i class="fa-solid fa-user-shield"></i>
-                                <div>
-                                    <h4 class="text-gray-300">Limited Governance</h4>
-                                    <p>No admin controls over data retention or output verification.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="vs-badge">VS</div>
-                    <div class="comparison-card recommended">
-                        <div class="recommended-badge">Recommended</div>
-                        <div class="comparison-header">
-                            <div class="comparison-icon">
-                                <i class="fa-solid fa-layer-group"></i>
-                            </div>
-                            <div class="comparison-title">
-                                <h3 class="text-white">Internal Assistant</h3>
-                                <p class="text-gray-400">Enterprise Grade</p>
-                            </div>
-                        </div>
-                        <div class="comparison-features">
-                            <div class="comparison-feature">
-                                <i class="fa-solid fa-bullseye"></i>
-                                <div>
-                                    <h4 class="text-white">Specialized Context</h4>
-                                    <p>Understands your acronyms, projects, and organizational structure.</p>
-                                </div>
-                            </div>
-                            <div class="comparison-feature">
-                                <i class="fa-solid fa-database"></i>
-                                <div>
-                                    <h4 class="text-white">Deeply Indexed Documents</h4>
-                                    <p>Instantly recalls details from PDFs, Notion, Drive, and Wikis.</p>
-                                </div>
-                            </div>
-                            <div class="comparison-feature">
-                                <i class="fa-solid fa-bolt"></i>
-                                <div>
-                                    <h4 class="text-white">Integrated & Secure</h4>
-                                    <p>Data stays within your tenant. Zero training on public models.</p>
-                                </div>
-                            </div>
-                            <div class="comparison-feature">
-                                <i class="fa-solid fa-check-double"></i>
-                                <div>
-                                    <h4 class="text-white">Consistent & Verifiable</h4>
-                                    <p>Every answer includes citations linking back to the source.</p>
-                                </div>
-                            </div>
+                        <div class="value-prop-text">
+                            <h4>Your data stays yours</h4>
+                            <p>Unlike public AI tools, Zeke runs in a fully isolated environment. Your documents are never used to train external models, never leave your security perimeter, and every answer is traceable to its source.</p>
                         </div>
                     </div>
                 </div>
