@@ -235,6 +235,15 @@
             color: #888;
         }
 
+        .brand-name {
+            font-size: clamp(14px, 2vw, 18px);
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            color: #fff;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
         .title-tagline {
             font-size: clamp(20px, 3vw, 32px);
             color: #888;
@@ -344,6 +353,26 @@
             font-size: 11px;
             color: #444;
             font-family: 'JetBrains Mono', monospace;
+        }
+
+        .dual-stats {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .stat-block {
+            padding-bottom: 24px;
+            border-bottom: 1px solid #222;
+        }
+
+        .stat-block:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .stat-block .stat-number {
+            font-size: clamp(48px, 8vw, 80px);
         }
 
         .problem-points {
@@ -1366,6 +1395,107 @@
             font-family: 'JetBrains Mono', monospace;
         }
 
+        .cta-emails {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 4px;
+        }
+
+        /* Timeline styles */
+        .timeline-row {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .timeline-step {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .timeline-marker {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .timeline-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 600;
+            color: #fff;
+            flex-shrink: 0;
+        }
+
+        .timeline-line {
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(to right, #333, #222);
+            margin-left: 12px;
+        }
+
+        .timeline-content {
+            padding-left: 8px;
+        }
+
+        .timeline-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #111;
+            border: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 16px;
+        }
+
+        .timeline-icon i {
+            font-size: 20px;
+            color: #fff;
+        }
+
+        .timeline-icon.final {
+            background: #fff;
+            border-color: #fff;
+        }
+
+        .timeline-icon.final i {
+            color: #000;
+        }
+
+        .timeline-content h4 {
+            font-size: 16px;
+            margin-bottom: 8px;
+        }
+
+        .timeline-content p {
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .timeline-duration {
+            font-size: 11px;
+            font-family: 'JetBrains Mono', monospace;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 4px 8px;
+            background: #1a1a1a;
+            border-radius: 4px;
+        }
+
         /* Mobile Responsive */
         @media (max-width: 900px) {
             .problem-layout,
@@ -1441,6 +1571,15 @@
                 flex-direction: column;
             }
 
+            .timeline-row {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .timeline-line {
+                display: none;
+            }
+
             .cta-banner {
                 flex-direction: column;
                 text-align: center;
@@ -1503,9 +1642,10 @@
         <div class="slide slide-title active" data-slide="0">
             <div class="slide-content">
                 <div class="title-icon">
-                    <i class="fa-solid fa-layer-group"></i>
+                    <i class="fa-solid fa-bolt"></i>
                 </div>
-                <h1>Internal AI Assistant<br/>for Companies</h1>
+                <p class="brand-name">ZEKE</p>
+                <h1>Your Internal AI Assistant</h1>
                 <p class="title-tagline">
                     Turn company documents into <span>instant, reliable answers</span>
                 </p>
@@ -1527,7 +1667,7 @@
                 </div>
             </div>
             <div class="slide-footer">
-                <span>Internal AI Assistant</span>
+                <span>Zeke - Internal AI Assistant</span>
                 <span>Confidential</span>
             </div>
         </div>
@@ -1541,13 +1681,20 @@
             <div class="slide-content">
                 <div class="problem-layout">
                     <div class="problem-stat">
-                        <span class="stat-label">Productivity Loss</span>
-                        <div class="stat-number">30<span>%</span></div>
-                        <p class="stat-description">of knowledge workers' time is wasted searching for information every single day.</p>
-                        <div class="stat-bar">
-                            <div class="stat-bar-fill"></div>
+                        <div class="dual-stats">
+                            <div class="stat-block">
+                                <span class="stat-label">Time Lost Daily</span>
+                                <div class="stat-number">1.8<span>hrs</span></div>
+                                <p class="stat-description">per employee spent searching for information instead of doing actual work.</p>
+                                <p class="stat-source">Source: McKinsey</p>
+                            </div>
+                            <div class="stat-block">
+                                <span class="stat-label">Annual Cost Per Employee</span>
+                                <div class="stat-number">$5.7<span>K</span></div>
+                                <p class="stat-description">wasted on searching and not finding the information they need.</p>
+                                <p class="stat-source">Source: IDC Research</p>
+                            </div>
                         </div>
-                        <p class="stat-source">Source: McKinsey Global Institute</p>
                     </div>
                     <div class="problem-points">
                         <p class="problem-intro">Employees lose time every day by:</p>
@@ -1976,20 +2123,11 @@
                         </p>
                         <div class="pilot-step">
                             <div class="pilot-step-icon">
-                                <i class="fa-solid fa-users"></i>
-                            </div>
-                            <div>
-                                <h4 class="text-white">Select One Department</h4>
-                                <p>Start small (e.g., HR, IT, or Sales Support)</p>
-                            </div>
-                        </div>
-                        <div class="pilot-step">
-                            <div class="pilot-step-icon">
                                 <i class="fa-solid fa-folder-open"></i>
                             </div>
                             <div>
                                 <h4 class="text-white">Curate Document Set</h4>
-                                <p>Upload 50-100 key high-value documents</p>
+                                <p>Upload 1-100 key high-value documents</p>
                             </div>
                         </div>
                         <div class="pilot-step">
@@ -2010,21 +2148,21 @@
                         <div class="metrics-grid">
                             <div class="metric-card">
                                 <div class="metric-header">
-                                    <i class="fa-solid fa-comments"></i>
+                                    <i class="fa-solid fa-stopwatch"></i>
                                     <span>KPI 01</span>
                                 </div>
-                                <p class="metric-value">-40%</p>
-                                <p class="metric-label">Repeated Questions</p>
-                                <p class="metric-desc">Reduction in duplicate queries to management.</p>
+                                <p class="metric-value">&lt; 1<span style="font-size: 0.5em;">min</span></p>
+                                <p class="metric-label">Time to Answer</p>
+                                <p class="metric-desc">Fast retrieval vs. 15+ min manual search.</p>
                             </div>
                             <div class="metric-card">
                                 <div class="metric-header">
-                                    <i class="fa-solid fa-stopwatch"></i>
+                                    <i class="fa-solid fa-bullseye"></i>
                                     <span>KPI 02</span>
                                 </div>
-                                <p class="metric-value">&lt; 5s</p>
-                                <p class="metric-label">Time to Answer</p>
-                                <p class="metric-desc">Instant retrieval vs. 15+ min manual search.</p>
+                                <p class="metric-value">95%+</p>
+                                <p class="metric-label">Answer Accuracy</p>
+                                <p class="metric-desc">Correct, cited responses from your documents.</p>
                             </div>
                             <div class="metric-card">
                                 <div class="metric-header">
@@ -2069,61 +2207,89 @@
         <!-- SLIDE 8: Next Steps -->
         <div class="slide" data-slide="7">
             <div class="slide-header">
-                <h2>Next Steps</h2>
+                <h2>Implementation Timeline</h2>
                 <span class="slide-number">08</span>
             </div>
             <div class="slide-content">
                 <div class="next-layout">
-                    <div class="next-steps-row">
-                        <div class="next-step">
-                            <span class="next-step-number">1</span>
-                            <div class="next-step-content">
-                                <div class="next-step-icon">
-                                    <i class="fa-solid fa-users-viewfinder"></i>
+                    <div class="timeline-row">
+                        <div class="timeline-step">
+                            <div class="timeline-marker">
+                                <span class="timeline-number">1</span>
+                                <div class="timeline-line"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-icon">
+                                    <i class="fa-solid fa-file-signature"></i>
                                 </div>
-                                <h4 class="text-white">Select Pilot Team</h4>
-                                <p>Identify a specific department (e.g., HR or Support) facing high question volume.</p>
+                                <h4 class="text-white">Sign NDA & Agreement</h4>
+                                <p>Protect your data with a mutual NDA and service agreement.</p>
+                                <span class="timeline-duration">Day 1</span>
                             </div>
                         </div>
-                        <div class="next-step">
-                            <span class="next-step-number">2</span>
-                            <div class="next-step-content">
-                                <div class="next-step-icon">
-                                    <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <div class="timeline-step">
+                            <div class="timeline-marker">
+                                <span class="timeline-number">2</span>
+                                <div class="timeline-line"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-icon">
+                                    <i class="fa-solid fa-folder-open"></i>
                                 </div>
-                                <h4 class="text-white">Upload Documents</h4>
-                                <p>Securely connect your knowledge base or upload key PDF/Doc files for indexing.</p>
+                                <h4 class="text-white">Deliver Documents</h4>
+                                <p>Share your internal documents via secure transfer.</p>
+                                <span class="timeline-duration">Day 2-3</span>
                             </div>
                         </div>
-                        <div class="next-step">
-                            <span class="next-step-number">3</span>
-                            <div class="next-step-content">
-                                <div class="next-step-icon">
+                        <div class="timeline-step">
+                            <div class="timeline-marker">
+                                <span class="timeline-number">3</span>
+                                <div class="timeline-line"></div>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-icon">
+                                    <i class="fa-solid fa-database"></i>
+                                </div>
+                                <h4 class="text-white">Secure Upload & Indexing</h4>
+                                <p>We process and index your documents in an isolated environment.</p>
+                                <span class="timeline-duration">2-3 Weeks</span>
+                            </div>
+                        </div>
+                        <div class="timeline-step">
+                            <div class="timeline-marker">
+                                <span class="timeline-number">4</span>
+                            </div>
+                            <div class="timeline-content">
+                                <div class="timeline-icon final">
                                     <i class="fa-solid fa-rocket"></i>
                                 </div>
-                                <h4 class="text-white">Launch in Days</h4>
-                                <p>Grant access to the pilot team and start measuring time saved immediately.</p>
+                                <h4 class="text-white">Kick Off Pilot</h4>
+                                <p>Your team gets access and starts seeing value immediately.</p>
+                                <span class="timeline-duration">Go Live</span>
                             </div>
                         </div>
                     </div>
                     <div class="cta-banner">
                         <div class="cta-content">
                             <p>Ready to start?</p>
-                            <h3>Run a pilot and measure the impact.</h3>
-                            <p class="cta-sub">See the difference in productivity within the first week.</p>
+                            <h3>Let's schedule a discovery call.</h3>
+                            <p class="cta-sub">We'll walk you through the process and answer any questions.</p>
                         </div>
                         <div class="cta-actions">
                             <button class="cta-button">
-                                Schedule Demo
+                                Schedule Call
                                 <i class="fa-solid fa-arrow-right"></i>
                             </button>
-                            <span class="cta-email">founders@internal-ai.com</span>
+                            <div class="cta-emails">
+                                <span class="cta-email">znjeim@gmail.com</span>
+                                <span class="cta-email">kevin.chiha@gmail.com</span>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
             <div class="slide-footer">
-                <span>Implementation Plan</span>
+                <span>Implementation Timeline</span>
                 <span>Confidential</span>
             </div>
         </div>
